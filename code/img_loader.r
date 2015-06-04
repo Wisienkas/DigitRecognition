@@ -5,21 +5,26 @@
 #OUTPUT = imageData
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(png, class, EBImage, gmodels)
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("EBImage")
+#pacman::p_load(png, class, gmodels, EBImage)
+pacman::p_load(png, class, gmodels)
 
 imageBasePath = "../digits"
 
-img_loader.halfPerson <- function(group, member) {
+img_loader.halfPerson <- function(group, member, sigmaBLur = NULL) {
 }
 
-img_loader.singlePerson <- function(group, member) { 
+img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) { 
     #load the scaned images
     imageInfo <- img_loader.fileLocator(imageBasePath, group, member)
+    
+    #Read the files
     ciffers <- lapply(X = imageInfo$img_files, FUN = readPNG)
     
     #load the corner values
     corners <- read.csv(imageInfo$corner_file)
-    corners <- trunc((corners*100) /300)
+    corners <- trunc((corners*100)/300)
     
     #define lists to be used
     gray <- list(1:5)
@@ -39,7 +44,12 @@ img_loader.singlePerson <- function(group, member) {
       kernel <- matrix(1,3,3)
       kernel <- kernel/9
       
-      smoothed[[i]] <- filter2(gray[[i]], kernel)
+      #Gaussian smoothing
+      if(is.null(sigmaBLur) || sigmaBLur == 0) {
+        smoothed[[i]] = gray[[i]]
+      } else{
+        smoothed[[i]] <- gblur(gray[[i]], sigma = sigmaBLur) 
+      }
     }
     
     #generate image that is prepared for learning and visualization
@@ -73,10 +83,16 @@ img_loader.singlePerson <- function(group, member) {
       }
     }
     
+    #img <- ciffers[[1]]
+    #img[,,1] <- prepared[[1]]
+    #img[,,2] <- prepared[[1]]
+    #img[,,3] <- prepared[[1]]
+    #display(img)
+    
     return(trainingDigit)
   }
 
-img_loader.allPersons <- function() {
+img_loader.allPersons <- function(sigmaBLur = NULL) {
   group_folders <- list.dirs(path = imageBasePath)    
   members <- c()
   
@@ -93,7 +109,7 @@ img_loader.allPersons <- function() {
     member_name <- substr(dirPath, nchar(dirPath) - 6, nchar(dirPath));
     
     #Get images for that user
-    member <- img_loader.singlePerson(group_name, member_name);
+    member <- img_loader.singlePerson(group_name, member_name, sigmaBLur);
     
     if(length(member) > 0 && !is.null(member)) {
       #Add row to matrix
