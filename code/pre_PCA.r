@@ -2,6 +2,13 @@
 #- INPUT = imageData
 #- Output = dataFrame (PCA Data)
 
-pre.PCA = function(imageData, coverage) {
+# 
+# DEPENDENCIES 
+#
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(pca)
+
+# Wauw
+pre.PCA <- function(imageData, coverage) {
   
 }
