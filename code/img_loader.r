@@ -7,12 +7,14 @@
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(png, class, EBImage, gmodels)
 
+imageBasePath = "../digits"
+
 img_loader.halfPerson <- function(group, member) {
 }
 
 img_loader.singlePerson <- function(group, member) { 
     #load the scaned images
-    imageInfo <- img_loader.fileLocator("../digits", group, member)
+    imageInfo <- img_loader.fileLocator(imageBasePath, group, member)
     ciffers <- lapply(X = imageInfo$img_files, FUN = readPNG)
     
     #load the corner values
@@ -75,6 +77,31 @@ img_loader.singlePerson <- function(group, member) {
   }
 
 img_loader.allPersons <- function() {
+  group_folders <- list.dirs(path = imageBasePath)    
+  members <- c()
+  
+  #Run through all the folders
+  lapply(X = group_folders, FUN = function(dirPath){
+    
+    #The folder must contain member before we want to look in it
+    if(length(grep("member", dirPath)) <  1) {
+      return()
+    }
+    
+    #Get group and member names
+    group_name <- substr(dirPath, nchar(dirPath) - 13, nchar(dirPath) - 13 + 5);
+    member_name <- substr(dirPath, nchar(dirPath) - 6, nchar(dirPath));
+    
+    #Get images for that user
+    member <- img_loader.singlePerson(group_name, member_name);
+    
+    if(length(member) > 0 && !is.null(member)) {
+      #Add row to matrix
+      members <<- c(members, member);
+    }
+  });  
+  
+  return (members);
 }
 
 img_loader.fileLocator <- function(basePath, group, member) {
