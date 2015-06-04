@@ -1,0 +1,43 @@
+#LaTex specific files
+*.aux
+*.glo
+*.idx
+*.log
+*.toc
+*.ist
+*.acn
+*.acr
+*.alg
+*.bbl
+*.blg
+*.dvi
+*.glg
+*.gls
+*.ilg
+*.ind
+*.lof
+*.lot
+*.maf
+*.mtc
+*.mtc1
+*.out
+*.synctex.gz
+*.fdb_latexmk
+
+# Do not sync PDF files
+*.pdf
+
+# Automaked files
+auto/*
+
+# Text
+*.tex#
+
+thumbs.db
+
+# For bibtex files
+*.xml
+!code/*.xml
+*.bib
+!books.bib
+*.bcf
