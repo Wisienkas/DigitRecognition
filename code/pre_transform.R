@@ -15,10 +15,9 @@ pre_transform.transform <- function(imageData) {
 
 }
 
-pre_transform.getClass <- function(df) {
+pre_transform.getClass <- function(df, digits_per_person = 4000) {
   # Make classes for everyone
   classF <- c()
-  digits_per_person <- 4000
   for(person in 1:(nrow(df) / digits_per_person)) {
     for(i in 1:10) classF <- c(classF, rep.int(x = i, times = 400))
   }
@@ -35,6 +34,7 @@ pre_transform.folds <- function(df) {
   folds <- list()
   for(i in 1:10) {
     fold <- seq(from = i, by = 10, to = nrow(df))
+    folds[[i]] <- list()
     folds[[i]]$df <- df[fold, ]
     folds[[i]]$cl <- classF[fold]
   }
