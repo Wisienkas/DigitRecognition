@@ -6,6 +6,7 @@ pacman::p_load(randomForest)
 run_randomForest.easy <- function(df) {
   folds <- pre_transform.folds(df = df)
   
+  results <- list()
   for(i in 1:length(folds)) {
     test <- list()
     train <- list()
@@ -17,6 +18,8 @@ run_randomForest.easy <- function(df) {
         train$cl <- factor(c(as.character(train$cl), as.character(folds[[j]]$df)))
       }
     }
+    
+    results <- rfcv(trainx = train$df, trainy = train$cl, cv.fold = 10, )
   }
 }
 
