@@ -19,7 +19,7 @@ pre_transform.getClass <- function(df, digits_per_person = 4000) {
   # Make classes for everyone
   classF <- c()
   for(person in 1:(nrow(df) / digits_per_person)) {
-    for(i in 1:10) classF <- c(classF, rep.int(x = i, times = 400))
+    for(i in 1:10) classF <- c(classF, rep.int(x = i, times = digits_per_person / 10))
   }
   classF <- factor(classF)
   
