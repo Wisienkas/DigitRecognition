@@ -34,6 +34,7 @@ img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) {
     #define lists to be used
     smoothed <- list(1:5)
     prepared <- list(1:5)
+    gray <- list(1:5)
     
     #convert the images to gray scale.
     for(i in 1:5) {
