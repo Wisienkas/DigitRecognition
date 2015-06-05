@@ -5,11 +5,16 @@
 #OUTPUT = imageData
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(png, class, EBImage, gmodels)
+pacman::p_load(png, class, gmodels)
 
 imageBasePath = "../digits"
 
 img_loader.halfPerson <- function(group, member) {
+  person <- img_loader.singlePerson(group, member)
+  for(i in 1:length(data)) {
+    person[[i]] = person[[i]][seq(from = 1, to = 400, by = 2),]
+  }
+  return(person)
 }
 
 img_loader.singlePerson <- function(group, member) { 
@@ -22,7 +27,6 @@ img_loader.singlePerson <- function(group, member) {
     corners <- trunc((corners*100) /300)
     
     #define lists to be used
-    gray <- list(1:5)
     smoothed <- list(1:5)
     prepared <- list(1:5)
     
@@ -31,20 +35,7 @@ img_loader.singlePerson <- function(group, member) {
       r <-ciffers[[i]][,,1]
       g <-ciffers[[i]][,,2]
       b <-ciffers[[i]][,,3]
-      gray[[i]] <- (r+g+b)/3
-    }
-    
-    #smooth images
-    for(i in 1:5) {
-      kernel <- matrix(1,3,3)
-      kernel <- kernel/9
-      
-      smoothed[[i]] <- filter2(gray[[i]], kernel)
-    }
-    
-    #generate image that is prepared for learning and visualization
-    for(i in 1:5) {
-      prepared[[i]] <- smoothed[[i]]
+      prepared[[i]] <- (r+g+b)/3
     }
     
     #extract individual ciffers

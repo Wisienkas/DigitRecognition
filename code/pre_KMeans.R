@@ -2,12 +2,11 @@
 #- Input = imageData
 #- Output = dataFrame (K-Means Data)
 
-pre.KMeans = function(imageData, classF, clusters) {
-  km.result <- kmeans(x = imageData, centers = clusters, iter.max = 1000, nstart = clusters * 20)
-  km <- list()
+pre.KMeans = function(imageData, clusters_per_digit) {
+  for(i in 1:length(imageData)) {
+    km <- kmeans(x = imageData[[i]], iter.max = 100, centers = clusters_per_digit, nstart = min(c(clusters_per_digit * 20, length(imageData[[i]]) / 10)))
+    imageData[[i]] <- km$centers
+  }
   
-  km$clusters <- km.result$cluster
-  km$centers <- as.data.frame(km.result$center)
-  
-  return(km)
+  return(imageData)
 }
