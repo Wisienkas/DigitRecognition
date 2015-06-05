@@ -14,7 +14,11 @@ pre_PCA
 
 pre_KMeans
 - Input = imageData
-- Output = dataFrame (K-Means Data)
+- Output = imageData
+
+pre_transform
+- Input = imageData
+- output = dataFrame
 
 alg_knn
 - Input = dataFrame

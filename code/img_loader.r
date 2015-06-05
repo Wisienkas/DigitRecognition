@@ -12,7 +12,12 @@ pacman::p_load(png, class, gmodels)
 
 imageBasePath = "../digits"
 
-img_loader.halfPerson <- function(group, member, sigmaBLur = NULL) {
+img_loader.halfPerson <- function(group, member, sigmaBlur = NULL) {
+  person <- img_loader.singlePerson(group, member, sigmaBlur)
+  for(i in 1:length(data)) {
+    person[[i]] = person[[i]][seq(from = 1, to = 400, by = 2),]
+  }
+  return(person)
 }
 
 img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) { 
@@ -27,7 +32,6 @@ img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) {
     corners <- trunc((corners*100)/300)
     
     #define lists to be used
-    gray <- list(1:5)
     smoothed <- list(1:5)
     prepared <- list(1:5)
     
