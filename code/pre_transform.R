@@ -2,6 +2,7 @@
 # - Input = imageData
 # - output = dataFrame
 
+# Takes ImageData and transform it to DataFrame format
 pre_transform.transform <- function(imageData) {
 
   ## Turn them into a format readable by pca
@@ -12,4 +13,31 @@ pre_transform.transform <- function(imageData) {
   
   return(df)
 
+}
+
+pre_transform.getClass <- function(df) {
+  # Make classes for everyone
+  classF <- c()
+  digits_per_person <- 4000
+  for(person in 1:(nrow(df) / digits_per_person)) {
+    for(i in 1:10) classF <- c(classF, rep.int(x = i, times = 400))
+  }
+  classF <- factor(classF)
+  
+  return(classF)
+}
+
+# Return folds in a list of 10 df's with class association
+pre_transform.folds <- function(df) {
+  classF <- pre_transform.getClass(df)
+  
+  # Split data into list
+  folds <- list()
+  for(i in 1:10) {
+    fold <- seq(from = i, by = 10, to = nrow(df))
+    folds[[i]]$df <- df[fold, ]
+    folds[[i]]$cl <- classF[fold]
+  }
+  
+  return(folds)
 }
