@@ -5,26 +5,31 @@
 #OUTPUT = imageData
 
 if (!require("pacman")) install.packages("pacman")
+#source("http://bioconductor.org/biocLite.R")
+#biocLite("EBImage")
+#pacman::p_load(png, class, gmodels, EBImage)
 pacman::p_load(png, class, gmodels)
 
 imageBasePath = "../digits"
 
-img_loader.halfPerson <- function(group, member) {
-  person <- img_loader.singlePerson(group, member)
+img_loader.halfPerson <- function(group, member, sigmaBlur = NULL) {
+  person <- img_loader.singlePerson(group, member, sigmaBlur)
   for(i in 1:length(data)) {
     person[[i]] = person[[i]][seq(from = 1, to = 400, by = 2),]
   }
   return(person)
 }
 
-img_loader.singlePerson <- function(group, member) { 
+img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) { 
     #load the scaned images
     imageInfo <- img_loader.fileLocator(imageBasePath, group, member)
+    
+    #Read the files
     ciffers <- lapply(X = imageInfo$img_files, FUN = readPNG)
     
     #load the corner values
     corners <- read.csv(imageInfo$corner_file)
-    corners <- trunc((corners*100) /300)
+    corners <- trunc((corners*100)/300)
     
     #define lists to be used
     smoothed <- list(1:5)
@@ -35,7 +40,25 @@ img_loader.singlePerson <- function(group, member) {
       r <-ciffers[[i]][,,1]
       g <-ciffers[[i]][,,2]
       b <-ciffers[[i]][,,3]
-      prepared[[i]] <- (r+g+b)/3
+      gray[[i]] <- (r+g+b)/3
+    }
+    
+    #smooth images
+    for(i in 1:5) {
+      kernel <- matrix(1,3,3)
+      kernel <- kernel/9
+      
+      #Gaussian smoothing
+      if(is.null(sigmaBLur) || sigmaBLur == 0) {
+        smoothed[[i]] = gray[[i]]
+      } else{
+        smoothed[[i]] <- gblur(gray[[i]], sigma = sigmaBLur) 
+      }
+    }
+    
+    #generate image that is prepared for learning and visualization
+    for(i in 1:5) {
+      prepared[[i]] <- smoothed[[i]]
     }
     
     #extract individual ciffers
@@ -64,10 +87,16 @@ img_loader.singlePerson <- function(group, member) {
       }
     }
     
+    #img <- ciffers[[1]]
+    #img[,,1] <- prepared[[1]]
+    #img[,,2] <- prepared[[1]]
+    #img[,,3] <- prepared[[1]]
+    #display(img)
+    
     return(trainingDigit)
   }
 
-img_loader.allPersons <- function() {
+img_loader.allPersons <- function(sigmaBLur = NULL) {
   group_folders <- list.dirs(path = imageBasePath)    
   members <- c()
   
@@ -84,7 +113,7 @@ img_loader.allPersons <- function() {
     member_name <- substr(dirPath, nchar(dirPath) - 6, nchar(dirPath));
     
     #Get images for that user
-    member <- img_loader.singlePerson(group_name, member_name);
+    member <- img_loader.singlePerson(group_name, member_name, sigmaBLur);
     
     if(length(member) > 0 && !is.null(member)) {
       #Add row to matrix
