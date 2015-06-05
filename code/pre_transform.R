@@ -27,8 +27,8 @@ pre_transform.getClass <- function(df, digits_per_person = 4000) {
 }
 
 # Return folds in a list of 10 df's with class association
-pre_transform.folds <- function(df, f = 10) {
-  classF <- pre_transform.getClass(df)
+pre_transform.folds <- function(df, f = 10, digits_per_person = 4000) {
+  classF <- pre_transform.getClass(df = df, digits_per_person = digits_per_person)
   
   # Split data into list
   folds <- list()
