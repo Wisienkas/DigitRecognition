@@ -4,10 +4,6 @@ img_loader
 - Load all person (Call load single person multiple times)
 OUTPUT = imageData
 
-pre_gausianSmoothing
-- Input = imageData
-- Ouput = smoothedImageData (Same format as imageData)
-
 pre_PCA
 - INPUT = imageData
 - Output = dataFrame (PCA Data)

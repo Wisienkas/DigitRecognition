@@ -3,67 +3,50 @@
 #- Output = dataMatrix (Data for performance, and arguments)
 
 if (!require("pacman")) install.packages("pacman")
-#pacman::p_load()
+pacman::p_load(class)
 source('img_loader.R')
+source('pre_transform.R')
 
 alg.knn.easy = function(dataFrame, k_arr) {
-  #Perform 90/10 split, with random split
-  retList <- alg.knn.randomSplit(dataFrame, 0.9)
-  
-  knn <- c()
-  knn$testData <- retList[[2]]
-  knn$testClass <- retList[[4]]
-  knn$trainData <- retList[[1]]
-  knn$trainClass <- retList[[3]]
-  
-  knn$model <- knn(train = knn$trainData, test = knn$testData, cl = knn$trainClass, k_arr)
-  
-  return (knn)
-}
+  result.list <- matrix(ncol = 3, dimnames = list(c('Result'), c('K', 'Success', 'Time')), byrow = TRUE)
+  result.list <- result.list[-1,]
 
-alg.knn.randomSplit <- function(dataFrame, split) {
-  #randomly split data in a balanced maner:
-  trainL = list(1:length(dataFrame))
-  testL = list(1:length(dataFrame))
-  for(Nr in 0:(length(dataFrame)-1))
-  {
-    amountEachNumber = nrow(dataFrame[[Nr+1]]);
+  for(k in 1:length(k_arr)) {
+    time <- 0
+    success <- c()
     
-    set.seed(1) ## make randomness reproducible here
-    rand <- sample(amountEachNumber) #generate  a randomly ordered indexing list the size of the datasample
-    
-    vector = c(1:amountEachNumber);
-    for(i in 1:trunc(amountEachNumber*split))
-    {
-      vector[i] = 1;
+    #Cross validation in 10 folds
+    for(i in 1:10) {
+      result.cl <- pre_transform.getClass(df = dataFrame)
+      result.seq <- seq(from = i, by = 10, to = nrow(dataFrame))
+      result.test <- dataFrame[result.seq,]
+      result.testCL <- result.cl[result.seq]
+      result.train <- dataFrame[-result.seq,]
+      result.trainCL <- result.cl[-result.seq]
+      
+      start_time <- as.numeric(Sys.time())
+      result.knn <- knn(train = result.train, test = result.test, cl = result.trainCL, k= k)
+      run_time <- as.numeric(Sys.time()) - start_time
+      time <- time + run_time
+      
+      result.table.units <- table(result.knn == result.testCL, result.testCL)[seq(from = 2, to = 20, by = 2)]
+      result.table.prob <- result.table.units / (nrow(result.test) / nlevels(result.testCL))
+      
+      success <- c(success, result.table.prob)
     }
-    for(i in trunc(amountEachNumber*split)+1:amountEachNumber)
-    {
-      vector[i] = 2;
+    
+    correctness <- c()
+    for(digit in 1:10) {
+      index.digit <- seq(from = digit, to = length(success), by = 10);
+      avg <- mean(success[index.digit])
+      correctness <- c(correctness, avg)
     }
-    splittingIndexer = vector[rand]
-    splitData <- split.data.frame(dataFrame[[Nr+1]], factor(splittingIndexer))
-    
-    trainL[[Nr+1]] <- splitData[[1]]
-    testL[[Nr+1]]<- splitData[[2]]
-  }  
-  
-  training <- trainL[[1]]
-  testing <- testL[[1]]
-  trainClass <- rep(0,nrow(trainL[[1]]) )
-  testClass <- rep(0,nrow(testL[[1]]) )
-  for(i in 2:10)
-  {
-    training <- rbind(training, trainL[[i]])
-    testing <- rbind(testing, testL[[i]])
-    
-    trainClass <- append(trainClass, rep(i-1,nrow(trainL[[i]]) ) )
-    testClass <- append(testClass, rep(i-1,nrow(testL[[i]]) ) )
+    avgSuccess <- mean(correctness)
+    res <- list(k, avgSuccess, time);
+    result.list <- rbind(result.list, res)
   }
-  trainClassF <- factor(trainClass)
-  testClassF <- factor(testClass)
   
-  return(list(training, testing, trainClassF, testClassF))
+  return (result.list)
 }
 
 alg.knn.hard <- function(dataFrame, kValue) {

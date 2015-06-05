@@ -14,7 +14,7 @@ imageBasePath = "../digits"
 
 img_loader.halfPerson <- function(group, member, sigmaBlur = NULL) {
   person <- img_loader.singlePerson(group, member, sigmaBlur)
-  for(i in 1:length(data)) {
+  for(i in 1:length(person)) {
     person[[i]] = person[[i]][seq(from = 1, to = 400, by = 2),]
   }
   return(person)
