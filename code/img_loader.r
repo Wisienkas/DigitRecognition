@@ -8,8 +8,7 @@ if (!require("pacman")) install.packages("pacman")
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("EBImage")
 #pacman::p_load(png, class, gmodels, EBImage)
-pacman::p_load(png, class, gmodels)
-
+pacman::p_load(png, class, gmodels, spatstat)
 imageBasePath = "../digits"
 
 img_loader.halfPerson <- function(group, member, sigmaBlur = NULL) {
@@ -53,7 +52,7 @@ img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) {
       if(is.null(sigmaBLur) || sigmaBLur == 0) {
         smoothed[[i]] = gray[[i]]
       } else{
-        smoothed[[i]] <- gblur(gray[[i]], sigma = sigmaBLur) 
+        smoothed[[i]] <- blur(x = gray[[i]], sigma = sigmaBLur) 
       }
     }
     
@@ -94,7 +93,14 @@ img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) {
     #img[,,3] <- prepared[[1]]
     #display(img)
     
-    return(trainingDigit)
+    # will add 1.0's to datasets digits with less than 380 dimenstions
+    data1 <- trainingDigit
+    for(i in 1:length(data1)) {
+      while(ncol(data1[[i]]) != 380) {
+        data1[[i]] <- cbind(data1[[i]], rep(1.0, 400))
+      }
+    }
+    return(data1)
   }
 
 img_loader.allPersons <- function(sigmaBLur = NULL) {
