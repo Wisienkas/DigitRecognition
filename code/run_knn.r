@@ -12,26 +12,23 @@ source('graph_knn.r')
 blur_arr <- c(0.5, 1, 2)
 PCA_arr <- c(0.90, 0.95, 0.99)
 
-
 k_arr <- c(1,5,10,20,50)
 
 dataFrame <- data.frame();
 
 for(blur in 1:length(blur_arr)){
+  tmp.data <- img_loader.singlePerson("group6", "member2", blur_arr[[blur]])
+  
   for(pca in 1:length(PCA_arr)) {
-    tmp.data <- img_loader.singlePerson("group6", "member2", blur_arr[[blur]])
     tmp.pca <- pre.PCA(tmp.data, PCA_arr[[pca]])
     tmp.knn <- alg.knn.easy(tmp.pca, k_arr, 4000, paste('B', blur_arr[[blur]], 'PCA', PCA_arr[[pca]], sep = ''))
     dataFrame <- rbind(dataFrame, tmp.knn)
   }
 }
 
-c <- ggplot(data=as.data.frame(dataFrame), aes(x=factor(K), y=AvgSuccess, fill=Name)) +
-  #coord_cartesian(ylim = c(0.9, 1)) +
-  geom_bar(width=0.7, stat="identity", position=position_dodge())
-c
+graph.knn.easy(as.data.frame(dataFrame))
 
-graph.knn.easy(as.data.frame(dataFrame), 0.5, 1)
+
 run_knn.easy.imageData <- img_loader.singlePerson("group6", "member2", 1)
 #run_knn.easy.imageData <- img_loader.allPersons(1)
 run_knn.easy.pca <- pre.PCA(run_knn.easy.imageData, 0.95)
@@ -49,7 +46,7 @@ run_knn.easy.knn <- alg.knn.easy(run_knn.easy.kmeans.tst, c(1,5,10,20,40,80), ru
 run_knn.easy.knn <- alg.knn.easy(run_knn.easy.pca, c(1,5,10,20,50), 4000, 'PCA')
 print(run_knn.easy.knn)
 
-graph.knn.easy(as.data.frame(run_knn.easy.knn), 0.5, 1)
+graph.knn.easy(as.data.frame(run_knn.easy.knn))
 
 dataFrameOne <- run_knn.easy.knn
 dataFrameTwo <- run_knn.easy.knn
