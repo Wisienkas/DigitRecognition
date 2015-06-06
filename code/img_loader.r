@@ -8,7 +8,7 @@ if (!require("pacman")) install.packages("pacman")
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("EBImage")
 #pacman::p_load(png, class, gmodels, EBImage)
-pacman::p_load(png, class, gmodels, spatstat)
+pacman::p_load(png, class, gmodels, EBImage)
 imageBasePath = "../digits"
 
 img_loader.halfPerson <- function(group, member, sigmaBlur = NULL) {
@@ -52,7 +52,7 @@ img_loader.singlePerson <- function(group, member, sigmaBLur = NULL) {
       if(is.null(sigmaBLur) || sigmaBLur == 0) {
         smoothed[[i]] = gray[[i]]
       } else{
-        smoothed[[i]] <- blur(x = gray[[i]], sigma = sigmaBLur) 
+        smoothed[[i]] <- gblur(x = gray[[i]], sigma = sigmaBLur) 
       }
     }
     
