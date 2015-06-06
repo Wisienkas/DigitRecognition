@@ -7,7 +7,7 @@ pacman::p_load(class)
 source('img_loader.R')
 source('pre_transform.R')
 
-alg.knn.easy = function(dataFrame, k_arr, digitsPrPerson) {
+alg.knn.easy = function(dataFrame, k_arr, digitsPrPerson, ident) {
   result.list <- as.data.frame(x = NULL)
 
   for(k in 1:length(k_arr)) {
@@ -43,6 +43,7 @@ alg.knn.easy = function(dataFrame, k_arr, digitsPrPerson) {
   }
   
   colnames(result.list) <- c('K', 'AvgSuccess', seq(0:9)-1)
+  result.list <- cbind(result.list, 'Name' = ident)
   return (result.list)
 }
 
