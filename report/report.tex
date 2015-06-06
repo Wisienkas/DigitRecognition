@@ -1,5 +1,9 @@
 \documentclass[11pt]{article}
 
+%% TODO
+%	- Cleanup unused packages
+%
+
 %Packages
 \usepackage{subfiles}
 \usepackage{enumitem}
@@ -20,18 +24,6 @@
 \usepackage{hyperref} %% Used for \nameref
 \usepackage{csquotes}
 \usepackage{times}
-%\usepackage[
-%backend=bibtex,
-%style=alphabetic,
-%bibencoding=ascii
-%]{biblatex}
-%\addbibresource{books.bib}
-%% Set some settigns for listings(code examples)
-%\lstset{
-%    frame=single, %% Creates a frame around the listing
-%    breaklines=true, %% Break lines, which is too long
-%    postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}} %% Creates red arrow on new line where a linebreak was triggered
-%} 
  
 \newcommand{\romanTitle}[1]{\MakeUppercase{\thepage}\hspace{0.2cm}#1}
 
@@ -44,7 +36,7 @@
 \title {
 	\textsc{\LARGE University of Southern Denmark}\\
 	\large Mærsk Mc-Kinney Møller Instituttet\\[1cm]
-	\LARGE Software Engineering\\
+	\Large Software Engineering\\
 	\rule{\linewidth}{0.4pt}\\[0.4cm]Statistical Machine Learning\\\rule{\linewidth}{0.4pt}\\[0.5cm] }
 
 \author{ 
@@ -68,7 +60,8 @@
 
 %Define the footer
 \rfoot{}
-\cfoot{\MakeUppercase{\thepage}}
+%\cfoot{\MakeUppercase{\thepage}}
+\cfoot{}
 \lfoot{}
 
 \renewcommand\contentsname{\romanTitle{Table of contents}}
@@ -81,5 +74,20 @@
 \rfoot{}
 \cfoot{Page \thepage\ of \pageref{LastPage}}
 \lfoot{}
+
+\section{Introduction}
+\subfile{introduction}
+
+\section{Theory}
+\subfile{theory}
+
+\section{Implementation}
+\subfile{implementation}
+
+\section{Results}
+\subfile{results}
+
+\section{Conclusion}
+\subfile{conclusion}
 
 \end{document}
