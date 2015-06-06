@@ -12,7 +12,6 @@ pre_transform.transform <- function(imageData) {
   }
   
   return(df)
-
 }
 
 pre_transform.getClass <- function(df, digits_per_person = 4000) {
