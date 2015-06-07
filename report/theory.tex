@@ -4,6 +4,7 @@
 Below are a short description of each of the different algorithms and techniques which has been used, with focus on the different parameters which can be changed.
 
 \subsection{Gaussian Smoothing}
+\label{sec:gaussianSmoothing}
 When working on recognizing text in an image, it is desired to get as sharp an image as possible, where all edges of each letter is easily distinctable from the white space around it. This can be achieved by applying a blur to the image, also known as Gaussian Smoothing.\\ 
 The kernel will be in the form of a grid, where the height and width will determine how many pixels the smoothing will be applied to, alternatively it can be specified as a radius, depending on what implementation of the algorithm is used.\\
 It is therefore desirable to look at both the size of the kernel and the amount of smoothing when trying to get the best setting. In the project, a package called 'EBImage'\footnote{http://www.bioconductor.org/packages/release/bioc/html/EBImage.html} does this for us, the amount of smoothing is called sigma, and the kernel has this default formula 
@@ -20,6 +21,7 @@ An example of this effect can be seen at figure~\ref{fig:imgExplainBlur} where a
 \end{figure}
 
 \subsection{Principal Component Analysis}
+\label{sec:PCA}
 In the dataset gathered for the project, a lot of the data was similar, or nearly similar, for instance if ten of the same digits were written almost identical. It can therefore speed up the process by a large margin if the dataset is reduced.\\
 One technique to reduce the dataset is to run a Principal Component Analysis(PCA) on the data. PCA by itself identifies the data entries with most variance. When the variance is determined, it is then possible to select the data entries with the most variance, which is defined by a parameter. This means that it is possible to run the PCA and get for instance 95\% of the data entries with the most variance, and thereby removing many similar entries and effectively reducing the dataset.\\
 {\color{red}{TODO should we explain more about the covariance, Eigenvectors and Eigenvalues?}}
