@@ -8,7 +8,8 @@ source('img_loader.R')
 source('pre_transform.R')
 
 alg.knn.easy = function(dataFrame, k_arr, digitsPrPerson, ident) {
-  result.list <- as.data.frame(x = NULL)
+  result.list <- matrix(nrow = 0, ncol = 13)
+  colnames(result.list) <- c('K', 'AvgSuccess','Name',0:9)
 
   for(k in 1:length(k_arr)) {
     success <- c()
@@ -38,12 +39,9 @@ alg.knn.easy = function(dataFrame, k_arr, digitsPrPerson, ident) {
       digits <- c(digits, avg)
     }
     avgSuccess <- mean(correctness)
-    res <- c(k_arr[[k]], avgSuccess, digits);
+    res <- c(as.numeric(k_arr[[k]]), as.double(avgSuccess), ident, digits);
     result.list <- rbind(result.list, res)
   }
-  
-  colnames(result.list) <- c('K', 'AvgSuccess', seq(0:9)-1)
-  result.list <- cbind(result.list, 'Name' = ident)
   return (result.list)
 }
 
