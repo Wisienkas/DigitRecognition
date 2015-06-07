@@ -30,8 +30,17 @@ One technique to reduce the dataset is to run a Principal Component Analysis(PCA
 K-Means
 
 \subsection{KNN}
-KNN\\
-Remember: Over fitting of the model and supervised vs unsupervised learning
+K-Nearest Neighbor(KNN) classification is one of the simplest algorithms used with statistical machine learning. It is a lazy learning, meaning that it does not run its algorithm before test data is provided. It is therefore quickly to train the model, but slow at performing a classification.\\
+The idea is to calculate the euclidean distance between all other data entries, and a specific data point. When all the distances are calculated, the one closest to the data point is chosen. An illustration of this can be seen at figure~\ref{fig:knnExp}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.35\textwidth]{images/knnExp}
+	\caption{Illustration of KNN}
+	\label{fig:knnExp}
+\end{figure}
+
+The important variable to configure in KNN is the k-value, which specifies how many neighbors is used for determining the result. It is not known beforehand which k-value is the best, one can have an assumption, but testing is needed to figure out the optimal K-value.
 
 \subsection{Random Forest}
 Random Forest\\
