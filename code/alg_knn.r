@@ -45,47 +45,44 @@ alg.knn.easy = function(dataFrame, k_arr, digitsPrPerson, ident) {
   return (result.list)
 }
 
-alg.knn.hard <- function(dataFrame, k_arr, personCount, digitsPrPerson) {
-  all.list <- matrix(ncol = 2, dimnames = list(c('Result'), c('Person', 'Data')), byrow = TRUE)
+alg.knn.hard <- function(dataFrame, k_val, personCount, digitsPrPerson) {
+  all.list <- matrix(nrow = 0, ncol = 12)
+  colnames(all.list) <- c('Person', 'AvgSuccess', 0:9)
   
   for(person in 1:personCount) {
-    result.list <- matrix(ncol = 3, dimnames = list(c('Result'), c('K', 'Avg Success', 'Digit success')), byrow = TRUE)
-    result.list <- result.list[-1,]
-    
-    start <- person * digitsPrPerson
-    end <- start + digitsPrPerson - 1
+    index <- person - 1 
+    start <- index * digitsPrPerson
+    end <- (start + digitsPrPerson)
+    if(index > 0)
+    {
+      end <- end - 1
+    }
     
     result.test <- dataFrame[(start:end),]
+    print(dim(result.test))
     result.testCL <- pre_transform.getClass(result.test, digitsPrPerson)
     
     result.train <- dataFrame[-(start:end),]
+    print(dim(result.train))
     result.trainCL <- pre_transform.getClass(result.train, digitsPrPerson)
     
-    for(k in 1:length(k_arr)) {
-      success <- c()
-      digits <- matrix(ncol = 2, dimnames = list(c('result'), c('Digit', 'Success')), byrow = TRUE)
-      digits <- digits[-1,]
+    result.knn <- knn(train = result.train, test = result.test, cl = result.trainCL, k= k_val)
+    result.table.units <- table(result.knn == result.testCL, result.testCL)[seq(from = 2, to = 20, by = 2)]
+    result.table.prob <- result.table.units / (nrow(result.test) / nlevels(result.testCL))
       
-      result.knn <- knn(train = result.train, test = result.test, cl = result.trainCL, k= k)
-      result.table.units <- table(result.knn == result.testCL, result.testCL)[seq(from = 2, to = 20, by = 2)]
-      result.table.prob <- result.table.units / (nrow(result.test) / nlevels(result.testCL))
-      
-      success <- c(result.table.prob)
-      
-      correctness <- c()
-      for(digit in 1:10) {
-        index.digit <- seq(from = digit, to = length(success), by = 10);
-        avg <- mean(success[index.digit])
-        correctness <- c(correctness, avg)
-        digits <- rbind(digits, list(digit, avg))
-      }
-      avgSuccess <- mean(correctness)
-      res <- list(k_arr[[k]], avgSuccess, digits);
-      result.list <- rbind(result.list, res)
-    }
+    success <- c(result.table.prob)
     
-    person <- list(person, result.list)
-    all.list <- rbind(all.list, person)
+    correctness <- c()
+    for(digit in 1:10) {
+      index.digit <- seq(from = digit, to = length(success), by = 10);
+      avg <- mean(success[index.digit])
+      correctness <- c(correctness, avg)
+      digits <- c(digits, avg)
+    }
+    avgSuccess <- mean(correctness)
+    
+    res <- c(paste('Person', person), as.double(avgSuccess), digits);
+    all.list <- rbind(all.list, res)
   }
   
   return (all.list)

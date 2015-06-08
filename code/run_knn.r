@@ -15,9 +15,16 @@ PCA_arr <- c(0.90, 0.95, 0.99)
 k_arr <- c(1,5,10,20,50)
 
 dataFrame <- data.frame();
+tmp.data <- img_loader.allPersons(2)
+tmp.pca <- pre.PCA(tmp.data, 0.90)
+tmp.knn <- alg.knn.easy(tmp.pca, k_arr, 4000, 'Blur 2, PCA 0.90')
+dataFrame <- rbind(dataFrame, tmp.knn)
+saveRDS(dataFrame, file = "knn_easy_2.rds")
+
 
 for(blur in 1:length(blur_arr)){
-  tmp.data <- img_loader.singlePerson("group6", "member2", blur_arr[[blur]])
+  #tmp.data <- img_loader.singlePerson("group6", "member2", blur_arr[[blur]])
+  tmp.data <- img_loader.allPersons(blur_arr[[blur]])
   
   for(pca in 1:length(PCA_arr)) {
     tmp.pca <- pre.PCA(tmp.data, PCA_arr[[pca]])
@@ -66,10 +73,11 @@ dataFrameThree <- rbind(dataFrameOne, dataFrameTwo)
 run_knn.hard.imageData <- img_loader.allPersons(1)
 
 #Preprocessing
-run_knn.hard.pca <- pre.PCA(run_knn.hard.imageData, 0.90)
+run_knn.hard.pca <- pre.PCA(run_knn.hard.imageData, 0.95)
 
 #Run the knn
-run_knn.hard.knn <- alg.knn.hard(run_knn.hard.pca, c(1,5,10,20,40,80), 10)
+run_knn.hard.knn <- alg.knn.hard(run_knn.hard.pca, 5, 20, 4000)
+saveRDS(run_knn.hard.knn, file = "knn_hard_1_1.rds")
 print(run_knn.hard.knn)
 
 #Create graph

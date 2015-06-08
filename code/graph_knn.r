@@ -6,6 +6,7 @@ pacman::p_load(ggplot2)
 
 graph.knn.easy = function(dataFrame) {
   c <- ggplot(dataFrame, aes(x=reorder(K), y=reorder(AvgSuccess), fill=Name)) +
-    geom_bar(width=0.7, stat="identity", position=position_dodge())
+    geom_bar(width=0.7, stat="identity", position=position_dodge()) +
+    labs(title = 'Easy problem', x = 'K value', y = 'Success', fill = 'Settings')
   c
 }
