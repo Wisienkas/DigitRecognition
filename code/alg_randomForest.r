@@ -48,7 +48,42 @@ alg_randomForest.run_folds <- function(folds, ntree) {
   return(results)
 }
 
-alg_randomForest.hard <- function(df, ntree, people) {
-  folds <- pre_transform.foldsPeople(df = df, people = people)
-  return(alg_randomForest.run_folds(folds, ntree))
+alg_randomForest.hard <- function(df, testdf, ntree, people, train_digit_per_person = 4000, test_digit_per_person = 4000) {
+  trainfolds <- pre_transform.foldsPeople(df = df, people = people, digits_per_person = train_digit_per_person)
+  testfolds <- pre_transform.foldsPeople(df = testdf, people = people, digits_per_person = test_digit_per_person)
+  
+  return(alg_randomForest.run_folds_result(trainfolds = trainfolds, testfolds = testfolds, ntree))
 }
+
+alg_randomForest.run_folds_result <- function(trainfolds, testfolds, ntree) {
+  results <- matrix(nrow = 0, ncol = 14)
+  colnames(results) <- c("person", "ntree", "time", "avg correctness", 0:9)
+  
+  for(trees in ntree) {
+    for(i in 1:length(trainfolds)) {
+      start_time <- Sys.time()
+      test <- list()
+      train <- list()
+      for(j in 1:length(trainfolds)) {
+        if(i == j) {
+          test <- testfolds[[j]]
+        } else {
+          train$df <- rbind(train$df, trainfolds[[j]]$df)
+          train$cl <- factor(c(as.character(train$cl), as.character(trainfolds[[j]]$cl)), levels = 1:10)
+        }
+      }
+      rf <- randomForest(x = train$df, y = train$cl, ntree = trees, xtest = test$df, ytest = test$cl)
+      pred <- c()
+      for(level in levels(test$cl)) {
+        pred[level] <- sum(rf$test$predicted == test$cl & test$cl == level) / sum(test$cl == level)
+      }
+      end_time <- Sys.time() - start_time
+      avgCorrect <- mean(pred)
+      results <- rbind(results, c("person" = i, "trees" = trees, "time" = end_time, "avg correctness" = avgCorrect, pred))
+    }
+  }
+  return(results)
+}
+
+
+

@@ -47,7 +47,7 @@ pre_transform.foldsPeople <- function(df, digits_per_person = 4000, people = 18)
   # Split data into list
   folds <- list()
   for(i in 1:people) {
-    fold <- ((i - 1) * 4000) + 1:(i * 4000)
+    fold <- (((i - 1) * digits_per_person) + 1):(i * digits_per_person)
     folds[[i]] <- list()
     folds[[i]]$df <- df[fold, ]
     folds[[i]]$cl <- classF[fold]
