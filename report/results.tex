@@ -27,6 +27,54 @@ The best settings from the easy problem was then used with the hard problem, and
 
 \subsection{Random Forest}
 \label{sec:resultRandomForest}
+The results for Random Forest is in the below sections \ref{sec:resultRandomForest:EasyProblem} and \ref{sec:resultRandomForest:HardProblem}.
+
+\subsubsection{Easy Problem}
+\label{sec:resultRandomForest:EasyProblem}
+The result of the easy problem with Random Forest is illustrated in figure~\ref{fig:rfEasyProblem}. 
+
+The best result with using PC's from the PCA is with 95 \% coverage of variance and sigma value of 1, which yielded a accuracy of 84.04 \%.
+
+There seem to be a local maximum for 95 \% coverage which drops, when going to either 90 and 99 \%.
+
+For Kmeans the most approbiate amount of clusters seem to be around ?? 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{images/rf_easy}
+  \caption{Figure showing performance using the Random Forest algorithm, with different pre prosessing and parameters}
+  \label{fig:rfEasyProblem}
+\end{figure}
+
+\subsubsection{Hard Problem}
+
+The setting stated in section~\ref{sec:implRF:hardProblem} yielded the results shown in figure~\ref{fig:rfHardProblem}. 
+
+A funny occourence shows that for the two approaches, different people both the worst hand writing and the best.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{images/rf_hard}
+  \caption{Figure showing performance using the Random Forest algorithm, having each person as test}
+  \label{fig:rfHardProblem}
+\end{figure}
+
+With KMeans pre-processing, the best/worst was:
+\begin{description}
+\item[Best] Group 3, Member 2
+\item[Worst] Group 2, Member 1
+\end{description}
+
+With PCA pre-processing, the best/worst was:
+\begin{description}
+\item[Best] Group 5, Member 2
+\item[Worst] Group 4, Member 3
+\end{description}
+
+
+This indicates that different results could be proven using different pre-processing, which favors some peoples hand-writing over others. 
+
+In all PCA caused the best results overall, where only Group 4, Member 3 achieved a higher performance in KMeans in contrast to PCA.
 
 \subsection{Who has the worst hand writing?}
 
