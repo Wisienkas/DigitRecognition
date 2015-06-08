@@ -76,8 +76,8 @@ run_knn.hard.imageData <- img_loader.allPersons(1)
 run_knn.hard.pca <- pre.PCA(run_knn.hard.imageData, 0.95)
 
 #Run the knn
-run_knn.hard.knn <- alg.knn.hard(run_knn.hard.pca, 5, 20, 4000)
-saveRDS(run_knn.hard.knn, file = "knn_hard_1_1.rds")
+run_knn.hard.knn <- alg.knn.hard(run_knn.hard.pca, 5, 50, 4000)
+saveRDS(run_knn.hard.knn, file = "knn_hard_1_2.rds")
 print(run_knn.hard.knn)
 
 #Create graph
