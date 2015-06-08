@@ -7,7 +7,7 @@ pacman::p_load(randomForest)
 
 alg_randomForest.easy <- function(df, ntree, test, digits_per_person = 4000, digits_per_person_test = 4000) {
   folds <- pre_transform.folds(df = df, f = 10, digits_per_person = digits_per_person)
-  folds.test <- pre_transform.folds(df = test, f = 10, digits_per_person = digits_per_person)
+  folds.test <- pre_transform.folds(df = test, f = 10, digits_per_person = digits_per_person_test)
   
   return(alg_randomForest.run_folds(folds, folds.test, ntree))
 }
