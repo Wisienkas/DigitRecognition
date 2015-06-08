@@ -70,7 +70,7 @@ The image data was fed to the PCA algorithm, and a percentage of the variance wa
 The KNN classification was done with the standard package in R, and using the pre-processing techniques Gaussian Smoothing and PCA.\\
 K-Means were also tested, but the time it took to compute it was too significant and the results gave a lot lower success, both with and without the PCA. It was therefore decided not to use the k-means with KNN.
 
-\subsection{Easy problem}
+\subsubsection{Easy problem}
 The easy problem was used to analyze which parameters gave the best result, because of this there are a lot of information in the resulting image.\\
 The following parameters were used:
 \begin{itemize}
@@ -81,7 +81,7 @@ The following parameters were used:
 Cross validation with a 90/10 split were performed at each preprocessing setting and at each k-value. The split was done where it takes out every tenth digit and use for testing, and then a new start index were chosen for each of the ten runs.
 The results can be seen in section~\ref{sec:resultKNN} \nameref{sec:resultKNN} at figure~\ref{fig:knnEasyProblem}
 
-\subsection{Hard problem}
+\subsubsection{Hard problem}
 The hard problem was calculated using the best results from the easy problem.
 \begin{itemize}
   \item Smoothing: The smoothing with sigma = 1.
@@ -93,7 +93,7 @@ The results can be seen in section~\ref{sec:resultKNN} \nameref{sec:resultKNN} a
 
 \subsection{Random Forest}
 \label{sec:impRandomForest}
-Random forest has been used with all of the three pre-processing methods stated in \ref{theory} \refname{theory}.
+Random forest has been used with all of the three pre-processing methods stated in \ref{sec:theory} \nameref{sec:theory}.
 
 \subsubsection{Easy Problem}
 
