@@ -57,7 +57,7 @@ The principle component analysis has been straight forward to implement.
 
 The image data was fed to the PCA algorithm, and a percentage of the variance was extracted as amounts of principle components. Figure \ref{fig:pca} shows the flow used.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{UML/PCA}
   \caption{Flow for extracting PC's from the PCA to reduce less variant dimensions}
@@ -66,6 +66,30 @@ The image data was fed to the PCA algorithm, and a percentage of the variance wa
 
 \subsection{KNN}
 \label{sec:impKNN}
+
+The KNN classification was done with the standard package in R, and using the pre-processing techniques Gaussian Smoothing and PCA.\\
+K-Means were also tested, but the time it took to compute it was too significant and the results gave a lot lower success, both with and without the PCA. It was therefore decided not to use the k-means with KNN.
+
+\subsection{Easy problem}
+The easy problem was used to analyze which parameters gave the best result, because of this there are a lot of information in the resulting image.\\
+The following parameters were used:
+\begin{itemize}
+  \item Smoothing: The default kernel were used with sigma of 0.5, 1 and 2.
+  \item PCA: The variance parameters were 90\%, 95\% and 99\%.
+  \item K-value: The KNN were run with the k-value of 1, 5, 10, 20 and 50.
+\end{itemize}
+Cross validation with a 90/10 split were performed at each preprocessing setting and at each k-value. The split was done where it takes out every tenth digit and use for testing, and then a new start index were chosen for each of the ten runs.
+The results can be seen in section~\ref{sec:resultKNN} \nameref{sec:resultKNN} at figure~\ref{fig:knnEasyProblem}
+
+\subsection{Hard problem}
+The hard problem was calculated using the best results from the easy problem.
+\begin{itemize}
+  \item Smoothing: The smoothing with sigma = 1.
+  \item PCA: The variance which gave the best was 99\%.
+  \item K-value: The best k-value was with k = 1.
+\end{itemize}
+It uses the exact same way, where it only does the split different to have a whole person as test instead of data from the entire dataset.
+The results can be seen in section~\ref{sec:resultKNN} \nameref{sec:resultKNN} at figure~\ref{fig:knnHardProblem}
 
 \subsection{Random Forest}
 \label{sec:impRandomForest}
