@@ -10,14 +10,14 @@ source("alg_randomForest.r")
 
 # Load all Data
 data <- img_loader.allPersons()
-data <- img_loader.singlePerson(group = "group1", member = "member1")
 
 result_data <- NULL
 
 clusters <- c(10, 20, 40, 80);
 pca <- c(0.9, 0.95, 0.99);
 
-ntree <- c()
+ntree <- c(250, 750, 1500)
+smoothing <- c(0.5, 1, 2)
 
 km_list <- list()
 
@@ -30,11 +30,13 @@ for(i in 1:length(clusters)) {
                        "km_data" = pre_transform.transform(imageData = km_data), 
                        "km_time" = end_time)
 }
+saveRDS(km_list, file = "km_list.RDS")
 
+result_data <- NULL
 # Running with only kmeans
 for(item in km_list) {
   start_time <- Sys.time();
-  rf <- alg_randomForest.easy(df = item$km_data, ntree = ntree, digits_per_person = item$clusters * 10)
+  rf <- alg_randomForest.easy(df = item$km_data, ntree = ntree, digits_per_person = item$km_clusters * 10)
   rf_km <- cbind(rf, "mode" = paste("kmeans", item$km_clusters, sep = "_"))
   if(is.null(result_data)) {
     result_data <- rf_km
@@ -42,7 +44,9 @@ for(item in km_list) {
     result_data <- rbind(result_data, rf_km)
   }
 }
+saveRDS(result_data, file = "kmeans_result.RDS")
 
+result_data <- NULL
 # Running with only PCA
 for(s in smoothing) {
   for(p in pca) {
@@ -57,4 +61,5 @@ for(s in smoothing) {
     }
   }
 }
+saveRDS(result_data, file = "PCA_result.RDS")
 
