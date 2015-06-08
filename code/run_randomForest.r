@@ -6,6 +6,7 @@ source("pre_PCA.r")
 source("pre_transform.R")
 source("pre_KMeans.R")
 source("alg_randomForest.r")
+source("graph_randomForest.r")
 
 
 # Load all Data
@@ -47,7 +48,7 @@ for(item in km_list) {
     result_data <- rbind(result_data, rf_km)
   }
 }
-saveRDS(result_data, file = "kmeans_result.RDS")
+saveRDS(result_data, file = "kmeans_resultv2.RDS")
 
 result_data <- NULL
 # Running with only PCA
@@ -142,7 +143,9 @@ p
 
 ## PLOTTING EASY
 
-result_easy_kmeans <- readRDS("kmeans_result.RDS")
+result_easy_kmeans <- readRDS("kmeans_resultv2.RDS")
+
+result_easy_s05 <- readRDS("s0_5v2_PCA_result.RDS")
 
 result_easy_s1 <- readRDS("s1v2_PCA_result.RDS")
 
