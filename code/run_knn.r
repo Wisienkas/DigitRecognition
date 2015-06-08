@@ -1,5 +1,12 @@
 #Code needed to run KNN
 
+##
+## BEGIN IMPORTANT NOTE
+##    DO NOT RUN THE ENTIRE FILE AS IS
+##    It currently works by only taking the parts which are needed and run seperately
+## END IMPORTANT NOTE
+##
+
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(ggplot2)
 source('pre_KMeans.R')
@@ -41,6 +48,7 @@ load_3 <- readRDS("knn_easy_2.rds")
 
 load <- c()
 load <- rbind(load, load_3)
+load <- readRDS("knn_easy_results.rds")
 graph.knn.easy(as.data.frame(load))
 saveRDS(load, "knn_easy_results.rds")
 
