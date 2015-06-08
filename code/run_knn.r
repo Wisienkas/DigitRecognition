@@ -35,6 +35,14 @@ for(blur in 1:length(blur_arr)){
 
 graph.knn.easy(as.data.frame(dataFrame))
 
+load_1 <- readRDS("knn_easy_1.rds")
+load_2 <- readRDS("knn_easy_05.rds")
+load_3 <- readRDS("knn_easy_2.rds")
+
+load <- c()
+load <- rbind(load, load_3)
+graph.knn.easy(as.data.frame(load))
+saveRDS(load, "knn_easy_results.rds")
 
 run_knn.easy.imageData <- img_loader.singlePerson("group6", "member2", 1)
 #run_knn.easy.imageData <- img_loader.allPersons(1)
@@ -79,6 +87,43 @@ run_knn.hard.pca <- pre.PCA(run_knn.hard.imageData, 0.95)
 run_knn.hard.knn <- alg.knn.hard(run_knn.hard.pca, 5, 50, 4000)
 saveRDS(run_knn.hard.knn, file = "knn_hard_1_2.rds")
 print(run_knn.hard.knn)
+
+loadHard <- readRDS("knn_hard.rds")
+loadHard2 <- readRDS("knn_hard_1_2.rds")
+#Group one
+loadHard2[1,1] <- "G1 M1"
+loadHard2[2,1] <- "G1 M2"
+loadHard2[3,1] <- "G1 M3"
+#Group 2
+loadHard2[4,1] <- "G2 M1"
+loadHard2[5,1] <- "G2 M2"
+loadHard2[6,1] <- "G2 M3"
+#Group 3
+loadHard2[7,1] <- "G3 M1"
+loadHard2[8,1] <- "G3 M2"
+#Group 4
+loadHard2[9,1] <- "G4 M1"
+loadHard2[10,1] <- "G4 M2"
+loadHard2[11,1] <- "G4 M3"
+#Group 5
+loadHard2[12,1] <- "G5 M1"
+loadHard2[13,1] <- "G5 M2"
+#Group 6
+loadHard2[14,1] <- "G6 M1"
+loadHard2[15,1] <- "G6 M2"
+#Group 7
+loadHard2[16,1] <- "G7 M1"
+loadHard2[17,1] <- "G7 M2"
+loadHard2[18,1] <- "G7 M3"
+#Group 8
+loadHard2[19,1] <- "G8 M1"
+loadHard2[20,1] <- "G8 M2"
+
+
+hardData <- as.data.frame(loadHard)
+hardData2 <- as.data.frame(loadHard2)
+
+graph.knn.hard(hardData2)
 
 #Create graph
 ### - TODO
