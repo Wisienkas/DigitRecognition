@@ -28,7 +28,17 @@ One technique to reduce the dataset is to run a Principal Component Analysis(PCA
 
 \subsection{K-Means}
 \label{sec:theorykMeans}
-K-Means
+K-Means Clustering is a method used to reduce the amount of observations in a data set, by finding an observation which represent an average value of the observations it covers. 
+
+At first the algorithm find ``n'' amount of seeds using the existing observations. After finding these observations, all the clusters find a new point, by averaging all the points classified for the same cluster. and the the following steps are repeated, until no data observations are given a different cluster.
+
+\begin{enumerate}
+\item All observation are classified to closests Cluster point
+\item Cluster point is re-calculated using points classified to it.
+\item If all cluster points remain the same the algorithm has found its final cluster points
+\end{enumerate}
+
+The result is ``n'' observations, based of all the data. 
 
 \subsection{KNN}
 \label{sec:theoryKNN}
@@ -46,7 +56,18 @@ The important variable to configure in KNN is the k-value, which specifies how m
 
 \subsection{Random Forest}
 \label{sec:theoryRandomForest}
-Random Forest\\
-Remember: Over fitting of the model and supervised vs unsupervised learning
+Random Forest is based on decision trees. 
+
+A decision tree is quite well for prediction. So the idea behind Random Forest, is to add a lot of trees and make a majority vote for a prediction, in order to achieve a less error prone prediction. 
+
+Each tree will be based upon a subset of the total data for both the observations and the attibutes, which means that all trees will look differently. Additionally the standard rules for decision trees can be applied to the trees in random forest, such as:
+
+\begin{itemize}
+\item The min amount of values required for a split
+\item The Maximum depth of a tree
+\item The minimum depth of a tree
+\end{itemize}
+
+Random Forest can is mainly tweaked, by setting the amount of the trees to grow, and setting the amount of features to select for a tree. 
 
 \end{document}
